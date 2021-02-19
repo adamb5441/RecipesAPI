@@ -1,43 +1,6 @@
 version: '3.8'
 
 services:
- 
-  recipesdb:
-    image: mongo:4.4.4
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: example
-    volumes:
-      - dbdata:/data/db
-    ports:
-      - 8081:8081
-  es:
-    labels:
-      com.example.service: "es"
-      com.example.description: "For searching and indexing data"
-    image: elasticsearch:5.4
-    container_name: recipes_search
-    volumes:
-      - type: volume
-        source: esdata
-        target: /usr/share/elasticsearch/data/
-    ports:
-      - "9200:9200"
-  logstash:
-    container_name: recipes_logstash    
-    # build:
-    #   context: .
-    #   dockerfile: logstash.Dockerfile
-    labels:
-      com.example.service: "logstash"
-      com.example.description: "For logging data"
-    image: logstash:5.4.3
-    volumes:
-      - ./:/logstash_dir
-    depends_on:
-    - es
-    ports:
-      - "5959:5959"
 #  RecipesApp:
 #    depends_on:
 #      - db
@@ -51,6 +14,19 @@ services:
 #    logging:
 #      driver: "json-file"
 
+  es:
+    labels:
+      com.example.service: "es"
+      com.example.description: "For searching and indexing data"
+    image: elasticsearch:5.4
+    container_name: recipes_search
+    volumes:
+      - type: volume
+        source: esdata
+        target: /usr/share/elasticsearch/data/
+    ports:
+      - "9200:9200"
+
+
 volumes:
- dbdata: {}
  esdata: {}
