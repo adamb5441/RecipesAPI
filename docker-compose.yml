@@ -24,15 +24,16 @@ services:
     ports:
       - "9200:9200"
   logstash:
-    container_name: recipes_logstash
+    container_name: recipes_logstash    
+    # build:
+    #   context: .
+    #   dockerfile: logstash.Dockerfile
     labels:
       com.example.service: "logstash"
       com.example.description: "For logging data"
     image: logstash:5.4.3
     volumes:
       - ./:/logstash_dir
-    command: logstash -f /logstash_dir/logstash.conf
-    command: bin/logstash -f /etc/logstash/conf.d/mongodata.conf
     depends_on:
     - es
     ports:
