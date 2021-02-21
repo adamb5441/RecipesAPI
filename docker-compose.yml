@@ -1,24 +1,33 @@
 version: '3.8'
 
 services:
-#  RecipesApp:
-#    depends_on:
-#      - db
-#      - es
-#    ports:
-#      - "8000:8000"
-#    environment:
-#      - LOGSTASH_HOST=logstash
-#    expose:
-#      - "5959"
-#    logging:
-#      driver: "json-file"
+  recipes-api:
+    container_name: recipes-api
+    build:
+      context: ./
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<provide-your-password-here>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
 
-  es:
+  elastic-search:
+    container_name: elastic-search
+    image: elasticsearch:7.10.1
+    environment:
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     labels:
       com.example.service: "es"
       com.example.description: "For searching and indexing data"
-    image: elasticsearch:5.4
     container_name: recipes_search
     volumes:
       - type: volume
