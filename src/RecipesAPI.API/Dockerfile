@@ -8,10 +8,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["src/RecipesAPI.API/RecipesAPI.API.csproj", "src/RecipesAPI.API/"]
-COPY ["src/RecipesAPI.API/RecipesAPI.Application.csproj", "src/RecipesAPI.Application/"]
-COPY ["src/RecipesAPI.API/RecipesAPI.Infrastructure.csproj", "src/RecipesAPI.Infrastructure/"]
-COPY ["src/RecipesAPI.API/RecipesAPI.Domain.csproj", "src/RecipesAPI.Domain/"]
-COPY ["src/RecipesAPI.API/RecipesAPI.Tests.csproj", "src/RecipesAPI.Tests/"]
+COPY ["src/RecipesAPI.Application/RecipesAPI.Application.csproj", "src/RecipesAPI.Application/"]
+COPY ["src/RecipesAPI.Infrastructure/RecipesAPI.Infrastructure.csproj", "src/RecipesAPI.Infrastructure/"]
+COPY ["src/RecipesAPI.Domain/RecipesAPI.Domain.csproj", "src/RecipesAPI.Domain/"]
+COPY ["src/RecipesAPI.Tests/RecipesAPI.Tests.csproj", "src/RecipesAPI.Tests/"]
 RUN dotnet restore "src/RecipesAPI.API/RecipesAPI.API.csproj"
 COPY . .
 WORKDIR "/src/src/RecipesAPI.API"
