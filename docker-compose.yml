@@ -1,20 +1,11 @@
-version: '3.8'
+version: '3.4'
 
 services:
-  recipes-api:
-    container_name: recipes-api
+  recipesapi.api:
+    image: ${DOCKER_REGISTRY-}recipesapiapi
     build:
-      context: ./
-    ports:
-      - 80:80
-      - 443:443
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=<provide-your-password-here>
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-    volumes:
-      - ~/.aspnet/https:/https:ro
+      context: .
+      dockerfile: src/RecipesAPI.API/Dockerfile
 
   elastic-search:
     container_name: elastic-search
@@ -28,7 +19,6 @@ services:
     labels:
       com.example.service: "es"
       com.example.description: "For searching and indexing data"
-    container_name: recipes_search
     volumes:
       - type: volume
         source: esdata
