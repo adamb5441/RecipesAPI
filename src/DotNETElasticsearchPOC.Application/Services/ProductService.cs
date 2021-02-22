@@ -82,7 +82,8 @@ namespace DotNETElasticsearchPOC.Application.Services
         public async Task SaveManyAsync(Product[] products)
         {
             _cache.AddRange(products);
-            await _elasticClient.IndexManyAsync(products);
+            var productsLIst = await _elasticClient.IndexManyAsync(products);
+            Console.WriteLine("done");
         }
 
         public async Task SaveBulkAsync(Product[] products)

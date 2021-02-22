@@ -6,7 +6,11 @@ services:
     build:
       context: .
       dockerfile: src/DotNETElasticsearchPOC.API/Dockerfile
-
+    networks:
+      - backend
+    ports:
+      - 80:80
+      - 443:443
   elastic-search:
     container_name: elastic-search
     image: elasticsearch:7.10.1
@@ -25,7 +29,11 @@ services:
         target: /usr/share/elasticsearch/data/
     ports:
       - "9200:9200"
+    networks:
+      - backend
 
-
+networks:
+  backend:
+    driver: bridge
 volumes:
  esdata: {}

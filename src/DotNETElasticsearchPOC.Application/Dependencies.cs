@@ -10,7 +10,7 @@ namespace DotNETElasticsearchPOC.Application
     {
         public static void AddElasticsearch(this IServiceCollection services, IConfiguration configuration)
         {
-            var url = "http://localhost:9200/";
+            var url = "http://elastic-search:9200/";
             var defaultIndex = "products";
 
             var settings = new ConnectionSettings(new Uri(url))
