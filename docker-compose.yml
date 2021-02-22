@@ -5,7 +5,7 @@ services:
     image: ${DOCKER_REGISTRY-}recipesapiapi
     build:
       context: .
-      dockerfile: src/RecipesAPI.API/Dockerfile
+      dockerfile: src/DotNETElasticsearchPOC.API/Dockerfile
 
   elastic-search:
     container_name: elastic-search
