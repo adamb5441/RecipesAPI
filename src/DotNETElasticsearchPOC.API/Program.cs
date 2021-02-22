@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace RecipesAPI.API
+namespace DotNETElasticsearchPOC.API
 {
     public class Program
     {

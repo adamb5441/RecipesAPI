@@ -11,8 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using DotNETElasticsearchPOC.Application;
+using DotNETElasticsearchPOC.Application.Services;
 
-namespace RecipesAPI.API
+namespace DotNETElasticsearchPOC.API
 {
     public class Startup
     {
@@ -23,10 +25,10 @@ namespace RecipesAPI.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddElasticsearch(Configuration);
+            services.AddSingleton<IProductService, ProductService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
