@@ -38,15 +38,21 @@ namespace RecipesAPI.API.Controllers
 
             return Ok(response.Documents);
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, Product product)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProduct(int id)
         {
-            var existing = await _productService.GetProductById(id);
+            var response = await _productService.GetProductById(id);
 
-            if (existing != null)
+            return Ok(response);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
+        {
+            var exists = await _productService.GetProductById(id);
+
+            if (exists != null)
             {
-                await _productService.SaveSingleAsync(existing);
+                await _productService.SaveSingleAsync(exists);
                 return Ok();
             }
 
@@ -56,11 +62,11 @@ namespace RecipesAPI.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var existing = await _productService.GetProductById(id);
+            var exists = await _productService.GetProductById(id);
 
-            if (existing != null)
+            if (exists != null)
             {
-                await _productService.DeleteAsync(existing);
+                await _productService.DeleteAsync(exists);
                 return Ok();
             }
 
