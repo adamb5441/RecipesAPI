@@ -16,27 +16,24 @@ namespace RecipesAPI.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-        private readonly IElasticClient _elasticClient;
 
-        public ProductsController(IProductService productService, IElasticClient elasticClient)
+        public ProductsController(IProductService productService)
         {
             _productService = productService;
-            _elasticClient = elasticClient;
         }
-        [HttpGet("find")]
-        public async Task<IActionResult> Find(string query, int page = 1, int pageSize = 5)
+        [HttpGet("SearchPage")]
+        public async Task<IActionResult> SearchProductsPage(string query, int page = 1, int pageSize = 5)
         {
-            var response = await _elasticClient.SearchAsync<Product>(
-                 s => s.Query(q => q.QueryString(d => d.Query('*' + query + '*')))
-                     .From((page - 1) * pageSize)
-                     .Size(pageSize));
+            var response = await _productService.SearchProductsPage( query, page, pageSize);
 
-            if (!response.IsValid)
-            {
-                return Ok(new Product[] { });
-            }
+            return Ok(response);
+        }
+        [HttpGet("SearchProducts")]
+        public async Task<IActionResult> SearchProducts(string query)
+        {
+            var response = await _productService.FuzzySearch(query);
 
-            return Ok(response.Documents);
+            return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
@@ -73,7 +70,7 @@ namespace RecipesAPI.API.Controllers
             return NotFound();
         }
 
-        [HttpGet("fakeimport/{count}")]
+        [HttpGet("FakeImport/{count}")]
         public async Task<ActionResult> Import(int count = 0)
         {
             var productFaker = new Faker<Product>()

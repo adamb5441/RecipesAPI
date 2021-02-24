@@ -9,7 +9,8 @@ namespace DotNETElasticsearchPOC.Application.Services
 {
     public interface IProductService
     {
-        //Task<IEnumerable<Product>> GetProducts(int count, int skip = 0);
+        Task<Product[]> SearchProductsPage(string query, int page, int pageSize);
+        Task<Product[]> FuzzySearch(string query);
         Task<Product> GetProductById(int id);
         Task DeleteAsync(Product product);
         Task SaveSingleAsync(Product product);

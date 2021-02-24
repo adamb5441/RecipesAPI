@@ -18,15 +18,39 @@ namespace DotNETElasticsearchPOC.Application.Services
             _elasticClient = elasticClient;
         }
 
-        //public virtual Task<IEnumerable<Product>> GetProducts(int count, int skip = 0)
-        //{
-        //    var products = _cache
-        //        .Where(p => p.ReleaseDate <= DateTime.UtcNow)
-        //        .Skip(skip)
-        //        .Take(count);
+        public async virtual Task<Product[]> SearchProductsPage(string query, int page, int pageSize)
+        {
+            var response = await _elasticClient.SearchAsync<Product>(s =>
+                s.Query(q => q.QueryString(d => d.Query('*' + query + '*')))
+                .From((page - 1) * pageSize)
+                .Size(pageSize));
+            if (!response.IsValid)
+            {
+                return new Product[] { };
+            }
 
-        //    return Task.FromResult(products);
-        //}
+            return response.Documents.ToArray();
+        }
+
+        public async virtual Task<Product[]> FuzzySearch(string query)
+        {
+            var response = await _elasticClient.SearchAsync<Product>(s => s
+               .Query(q => q.Bool(b => b
+                        .Should(
+                            s => s.Match(m => m.Query(query).Field(f => f.Name).Fuzziness(Fuzziness.EditDistance(1)).Boost(3)),
+                            s => s.Match(m => m.Query(query).Field(f => f.Description).PrefixLength(4).Fuzziness(Fuzziness.EditDistance(2)))
+                        )
+                    )
+                )
+                .From(1)
+                .Size(100));
+            if (!response.IsValid)
+            {
+                return new Product[] { };
+            }
+
+            return response.Documents.ToArray();
+        }
 
         public async virtual Task<Product> GetProductById(int id)
         {
