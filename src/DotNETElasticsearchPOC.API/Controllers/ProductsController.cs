@@ -77,7 +77,7 @@ namespace RecipesAPI.API.Controllers
             return NotFound();
         }
 
-        [HttpGet("FakeImport/{count}")]
+        [HttpGet("SeedElasticsearch/{count}")]
         public async Task<ActionResult> Import(int count = 0)
         {
             var productFaker = new Faker<Product>()

@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace RecipesAPI.Tests
+namespace DotNETElasticsearchPOC.Tests.Tests
 {
     public class UnitTest1
     {
