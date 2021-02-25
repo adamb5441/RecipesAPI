@@ -12,7 +12,7 @@ namespace DotNETElasticsearchPOC.Application.Services
     {
         Task<Product[]> SearchProductsPage(string query, int page, int pageSize);
         Task<Product[]> FuzzySearch(string query);
-        Task<AggregateDictionary> GetAverageRating();
+        Task<ValueAggregate> GetAverageRating();
         Task<Product> GetProductById(int id);
         Task DeleteAsync(Product product);
         Task SaveSingleAsync(Product product);

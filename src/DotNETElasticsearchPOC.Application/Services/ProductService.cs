@@ -53,7 +53,7 @@ namespace DotNETElasticsearchPOC.Application.Services
 
             return response.Documents.ToArray();
         }
-        public async virtual Task<AggregateDictionary> GetAverageRating()
+        public async virtual Task<ValueAggregate> GetAverageRating()
         {
             var response = await _elasticClient.SearchAsync<Product>(s => s
                 .Query(q => q.QueryString(d => d.Query('*' + "" + '*')))
@@ -63,7 +63,7 @@ namespace DotNETElasticsearchPOC.Application.Services
                     )
                 )
             );
-            return response.Aggregations;
+            return response.Aggregations.Average("avg_Rating");
         }
         public async virtual Task<Product> GetProductById(int id)
         {

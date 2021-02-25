@@ -40,7 +40,7 @@ namespace RecipesAPI.API.Controllers
         {
             var response = await _productService.GetAverageRating();
 
-            return Ok(response.Values);
+            return Ok(response);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
