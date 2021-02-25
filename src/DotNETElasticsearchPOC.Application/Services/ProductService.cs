@@ -1,5 +1,7 @@
 ﻿using DotNETElasticsearchPOC.Application.Models;
+using Microsoft.AspNetCore.Mvc;
 using Nest;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +53,18 @@ namespace DotNETElasticsearchPOC.Application.Services
 
             return response.Documents.ToArray();
         }
-
+        public async virtual Task<AggregateDictionary> GetAverageRating()
+        {
+            var response = await _elasticClient.SearchAsync<Product>(s => s
+                .Query(q => q.QueryString(d => d.Query('*' + "" + '*')))
+                .Aggregations(ag => ag
+                    .Average("avg_Rating", avg => avg
+                        .Field(field => field.Rating)
+                    )
+                )
+            );
+            return response.Aggregations;
+        }
         public async virtual Task<Product> GetProductById(int id)
         {
             var response = await _elasticClient.GetAsync<Product>(id, idx => idx.Index("products"));
@@ -73,9 +86,12 @@ namespace DotNETElasticsearchPOC.Application.Services
         public async Task SaveManyAsync(Product[] products)
         {
             var productsLIst = await _elasticClient.IndexManyAsync(products);
-            Console.WriteLine("done");
         }
-
+        public async Task Import(Product[] products)
+        {
+            //TODO: implement indexing
+            var productsLIst = await _elasticClient.IndexManyAsync(products);
+        }
         public async Task SaveBulkAsync(Product[] products)
         {
             await _elasticClient.BulkAsync(b => b.Index("products").IndexMany(products));

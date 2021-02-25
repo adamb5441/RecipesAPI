@@ -17,6 +17,5 @@ namespace DotNETElasticsearchPOC.Application.Models
         public string Price { get; set; }
         public int Quantity { get; set; }
         public float Rating { get; set; }
-        public DateTime ReleaseDate { get; set; }
     }
 }

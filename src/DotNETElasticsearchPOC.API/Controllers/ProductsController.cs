@@ -35,6 +35,13 @@ namespace RecipesAPI.API.Controllers
 
             return Ok(response);
         }
+        [HttpGet("AverageRating")]
+        public async Task<IActionResult> GetAverageRating()
+        {
+            var response = await _productService.GetAverageRating();
+
+            return Ok(response.Values);
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProduct(int id)
         {
@@ -83,8 +90,7 @@ namespace RecipesAPI.API.Controllers
                    .RuleFor(p => p.Category, f => f.Commerce.Categories(1).First())
                    .RuleFor(p => p.Price, f => f.Commerce.Price(1, 1000, 2, "$"))
                    .RuleFor(p => p.Quantity, f => f.Random.Int(0, 1000))
-                   .RuleFor(p => p.Rating, f => f.Random.Float(0, 1))
-                   .RuleFor(p => p.ReleaseDate, f => f.Date.Past(2));
+                   .RuleFor(p => p.Rating, f => f.Random.Float(0, 1));
 
 
             var products = productFaker.Generate(count);

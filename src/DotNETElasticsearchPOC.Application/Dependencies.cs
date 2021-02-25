@@ -29,9 +29,7 @@ namespace DotNETElasticsearchPOC.Application
         {
             settings.
                 DefaultMappingFor<Product>(m => m
-                .Ignore(p => p.Price)
                 .Ignore(p => p.Quantity)
-                .Ignore(p => p.Rating)
             );
         }
 
